@@ -1,0 +1,26 @@
+[package]
+name = "iron-curtain"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Async Runtime + Utilities
+tokio = { version = "1.18", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"
+eyre = "0.6"
+color-eyre = "0.6"
+reqwest = { version = "0.11", features = ["json"] }
+
+# Serialization & Configuration
+serde = { version = "1", features = ["derive", "rc"] }
+serde_json = "1.0"
+toml = "0.5"
+clap = { version = "3.1", features= ["derive"] }
+url = { version = "2.2", features = ["serde"] }
+scraper = "0.13"
+time = { version = "0.3", features = ["serde", "formatting", "parsing", "serde-human-readable"] }
+lazy_static = { version = "1.4" }
+either = { version = "1.8", features = ["serde"]}
+regex = "1.6"
+tera = "1"
