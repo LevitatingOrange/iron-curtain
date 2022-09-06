@@ -2,18 +2,13 @@ use crate::config::Config;
 use crate::matches::Match;
 use crate::matches::DATETIME_FORMAT;
 use crate::matches::DATE_FORMAT;
-use clap::{Parser, Subcommand};
-use either::{Either, Left, Right};
-use eyre::{ensure, eyre, Result, WrapErr};
-use lazy_static::lazy_static;
+use either::{Left, Right};
+use eyre::{ensure, Result};
 use regex::Regex;
-use reqwest::{Client, RequestBuilder};
-use scraper::{ElementRef, Html};
+use reqwest::Client;
 use serde::Serialize;
 use tera::Context;
 use tera::Tera;
-use time::format_description::{self, FormatItem};
-use time::{Date, Duration, OffsetDateTime, PrimitiveDateTime};
 use tracing::info;
 use url::Url;
 
@@ -84,8 +79,8 @@ pub async fn send_matches(
         let message_text = tera.render("message.html", &context)?;
 
         let message = PushOverMessage::new(
-            &token,
-            &user,
+            token,
+            user,
             &config.pushover.notification_title,
             &message_text,
             -1,

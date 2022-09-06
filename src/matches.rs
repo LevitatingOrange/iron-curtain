@@ -2,13 +2,10 @@ use crate::config::Config;
 use either::{Either, Left, Right};
 use eyre::{ensure, eyre, Result, WrapErr};
 use lazy_static::lazy_static;
-use regex::Regex;
-use reqwest::Client;
 use scraper::{ElementRef, Html};
 use serde::Serialize;
 use time::format_description::{self, FormatItem};
-use time::{Date, Duration, OffsetDateTime, PrimitiveDateTime};
-use tracing::info;
+use time::{Date, OffsetDateTime, PrimitiveDateTime};
 
 mod selector {
     use lazy_static::lazy_static;
@@ -80,7 +77,7 @@ pub fn get_games(config: &Config, body: &str) -> Result<Vec<Match>> {
                 .next()
                 .map(|e| {
                     let text = aggregate_text(e);
-                    parse_time(&config, &text).wrap_err_with(|| {
+                    parse_time(config, &text).wrap_err_with(|| {
                         format!("could not parse datetime from header '{}'", text)
                     })
                 })
@@ -97,7 +94,7 @@ pub fn get_games(config: &Config, body: &str) -> Result<Vec<Match>> {
             );
 
             ensure!(
-                home_team.len() > 0,
+                !home_team.is_empty(),
                 "could not get home team name from match"
             );
 
@@ -107,11 +104,11 @@ pub fn get_games(config: &Config, body: &str) -> Result<Vec<Match>> {
                     .ok_or_else(|| eyre!("could not get away team name from match"))?,
             );
             ensure!(
-                away_team.len() > 0,
+                !away_team.is_empty(),
                 "could not get away team name from match"
             );
 
-            matches.push(Match::new(home_team, away_team, current_date.clone()));
+            matches.push(Match::new(home_team, away_team, *current_date));
         }
     }
 

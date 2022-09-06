@@ -1,11 +1,11 @@
 use eyre::{Result, WrapErr};
 use serde::{Deserialize, Serialize};
 use std::path::{Path, PathBuf};
-use time::{Duration, UtcOffset};
+use time::UtcOffset;
 use tokio::fs::read_to_string;
 use url::Url;
 
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
 pub enum Secret {
     Env,
     Plain(String),
@@ -29,7 +29,7 @@ impl Default for Secret {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq, Debug)]
+#[derive(Deserialize, Serialize, PartialEq, Eq, Debug)]
 pub struct Config {
     pub scrape_urls: Vec<Url>,
     pub utc_offset: UtcOffset,
@@ -50,7 +50,7 @@ impl Config {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq, Debug)]
+#[derive(Deserialize, Serialize, PartialEq, Eq, Debug)]
 pub struct PushoverConfig {
     pub token: Secret,
     pub user_key: Secret,

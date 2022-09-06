@@ -1,19 +1,12 @@
-use std::sync::Arc;
-
 use clap::{Parser, Subcommand};
 use config::Config;
-use either::{Either, Left, Right};
-use eyre::{ensure, eyre, Result, WrapErr};
-use lazy_static::lazy_static;
+use eyre::{Result, WrapErr};
 use matches::{get_games, Match};
 use pushover::send_matches;
 use regex::Regex;
 use reqwest::Client;
-use scraper::{ElementRef, Html};
-use serde::Serialize;
 use tera::Tera;
-use time::format_description::{self, FormatItem};
-use time::{Date, Duration, OffsetDateTime, PrimitiveDateTime};
+use time::{Duration, OffsetDateTime};
 use tracing::info;
 
 mod config;
