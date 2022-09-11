@@ -60,7 +60,7 @@ async fn run(config: Config) -> Result<()> {
         .into_iter()
         .filter(|m| {
             let d = m.time.right_or_else(OffsetDateTime::date) - now;
-            let valid_time = (d.is_positive() || d.is_zero()) && d <= search_duration;
+            let valid_time = d.is_zero() || (d.is_positive() && d <= search_duration);
             let valid_team = regex.is_match(&m.home_team) || regex.is_match(&m.away_team);
             valid_time && valid_team
         })
